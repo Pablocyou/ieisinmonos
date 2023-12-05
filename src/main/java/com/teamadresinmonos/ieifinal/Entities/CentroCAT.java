@@ -2,10 +2,6 @@ package com.teamadresinmonos.ieifinal.Entities;
 
 public class CentroCAT {
 
-    private String id;
-    private String uuid;
-    private int position;
-    private String address;
     private String codiCentre;
     private String denominaciCompleta;
     private String nomNaturalesa;
@@ -28,11 +24,9 @@ public class CentroCAT {
     // Constructor, Getters and Setters
 
 
-    public CentroCAT(String id, String uuid, int position, String address, String codiCentre, String denominaciCompleta, String nomNaturalesa, String nomTitularitat, String adreca, String codiPostal, String nomComarca, String codiComarca, String codiMunicipi5Digits, String codiMunicipi6Digits, String nomMunicipi, String codiDistricteMunicipal, double coordenadesUtmX, double coordenadesUtmY, double coordenadesGeoX, double coordenadesGeoY, String estudis, String georeferencia) {
-        this.id = id;
-        this.uuid = uuid;
-        this.position = position;
-        this.address = address;
+    public CentroCAT(){}
+
+    public CentroCAT(String codiCentre, String denominaciCompleta, String nomNaturalesa, String nomTitularitat, String adreca, String codiPostal, String nomComarca, String codiComarca, String codiMunicipi5Digits, String codiMunicipi6Digits, String nomMunicipi, String codiDistricteMunicipal, double coordenadesUtmX, double coordenadesUtmY, double coordenadesGeoX, double coordenadesGeoY, String estudis, String georeferencia) {
         this.codiCentre = codiCentre;
         this.denominaciCompleta = denominaciCompleta;
         this.nomNaturalesa = nomNaturalesa;
@@ -52,39 +46,6 @@ public class CentroCAT {
         this.estudis = estudis;
         this.georeferencia = georeferencia;
     }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public int getPosition() {
-        return position;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public String getCodiCentre() {
         return codiCentre;
     }
