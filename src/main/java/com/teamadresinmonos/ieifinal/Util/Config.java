@@ -13,16 +13,14 @@ public class Config {
     File file;
     //Si añades algún atributo, describe añadiendo a este string qué valores debe aceptar
     String comment =
-            "#ARCHIVO DE CONFIG DE SERVER GREENIT API\n" +
-            "#OWNNAME -> El nombre del servidor\n" +
-            "#PUBLICIP -> La IP pública del servidor\n" +
+            "#ARCHIVO DE CONFIG DE SERVER IEI\n" +
             "#MARIADB -> La URL del servidor de MariaDB\n" +
             "#MDBUSER -> El usuario para mariaDB\n" +
             "#MDBPASS -> La contraseña para mariaDB\n\n\n";
     public Config(){
         try {
             file = new File(getResourcesLocation() + "db.properties");
-            System.out.println("SERVER.PROPERTIES EN: " + file.getAbsolutePath());
+            System.out.println("db.PROPERTIES EN: " + file.getAbsolutePath());
             loadProperties();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -30,45 +28,15 @@ public class Config {
         }
 
         //region DEFAULT
-        if(getSrvName() == null ){setSrvName("Touka");}
         if(getMdbPass() == null ){setMdbPass("adre1234");}
         if(getMdbUser() == null ){setMdbUser("root");}
-        if(getSrvIp() == null ){setSrvIp("127.0.0.1");}
-        if(getMdbURL() == null ){setMdbURL("jdbc:mariadb://localhost:3306/merequetengue");}
+        if(getMdbURL() == null ){setMdbURL("jdbc:mariadb://localhost:3306/mansana");}
         //endregion
     }
     /*
     Si añades más valores a guardar, recuerda hacer un get y set como los de abajo
     SI ALGUN GET O SET DA EXCEPCION ES PORQUE LA CLAVE (AKA "OWNNAME" O "MDBPASS" ETC) NO EXISTE
     */
-
-    //region Server
-    public String getSrvName(){
-        return (String)properties.get("OWNNAME");
-    }
-    public void setSrvName(String newName){
-        properties.setProperty("OWNNAME",""+newName);
-        try {
-            saveProperties();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public String getSrvIp(){
-        if(inDebug()) return "localhost:8080";
-        return (String)properties.get("PUBLICIP");
-    }
-    public void setSrvIp(String newIP){
-        properties.setProperty("PUBLICIP",""+newIP);
-        try {
-            saveProperties();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    //endregion
 
     //region MARIADB
     public String getMdbPass(){
@@ -120,10 +88,11 @@ public class Config {
         fi.close();
     }
     public static Boolean inDebug(){
-        if(Objects.equals(System.getProperty("os.name"), "Linux")){return false;} else return true;
+        if(Objects.equals(System.getProperty("os.name"), "Windows Server 2016")){return false;} else return true;
     }
-    public static String getHTMLLocation(){if(inDebug()){return "src/main/resources/html/";}else return "/home/ubuntu/app/html/";}
-    public static String getResourcesLocation(){if(inDebug()){return "src/main/resources/";}else return "/home/ubuntu/app/";}
+    public static String getResourcesLocation(){if(inDebug()){return "src/main/resources/";}else return "C:\\";}
+
+    public static String getDataLocation(){if(inDebug()){return "src/main/resources/Data/";}else return "C:\\Data\\";}
 
     //endregion
 

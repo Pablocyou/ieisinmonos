@@ -9,11 +9,9 @@ public class IeIfinalApplication {
     private static Config config = new Config();
     public static void main(String[] args) {
         SpringApplication.run(IeIfinalApplication.class, args);
-        System.out.println("GreenIt API Server " + config.getSrvName());
-        if(config.inDebug()){System.out.println("=-= RUNNING IN DEBUG MODE =-=");}else{System.out.println("-=- RUNNING IN AWS MODE -=-");}
+        if(config.inDebug()){System.out.println("=-= RUNNING IN DEBUG MODE =-=");}else{System.out.println("-=- RUNNING IN IEI MODE -=-");}
         System.out.println("path to resources: " + Config.getResourcesLocation());
         System.out.println("Corriendo sobre: " + System.getProperty("os.name"));
-        //test commit
     }
 
 }
