@@ -13,6 +13,7 @@ public class IeIfinalApplication {
         if(config.inDebug()){System.out.println("=-= RUNNING IN DEBUG MODE =-=");}else{System.out.println("-=- RUNNING IN AWS MODE -=-");}
         System.out.println("path to resources: " + Config.getResourcesLocation());
         System.out.println("Corriendo sobre: " + System.getProperty("os.name"));
+        //test commit
     }
 
 }
