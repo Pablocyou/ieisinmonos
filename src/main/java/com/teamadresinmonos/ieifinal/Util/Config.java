@@ -21,7 +21,7 @@ public class Config {
             "#MDBPASS -> La contraseña para mariaDB\n\n\n";
     public Config(){
         try {
-            file = new File(getResourcesLocation() + "server.properties");
+            file = new File(getResourcesLocation() + "db.properties");
             System.out.println("SERVER.PROPERTIES EN: " + file.getAbsolutePath());
             loadProperties();
         } catch (IOException e) {
