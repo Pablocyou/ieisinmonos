@@ -23,6 +23,13 @@ public class ExtractorCAT {
                     JsonObject jsonObject = JsonParser.parseString(current).getAsJsonObject();
                     String nombre = jsonObject.get("denominaciCompleta").getAsString();
                     String naturalesa = jsonObject.get("nomNaturalesa").getAsString();
+
+                    if (naturalesa.equals("Privat")) {
+                        naturalesa = "PRIVADO";
+                    } else if (naturalesa.equals("Públic")) {
+                        naturalesa = "PUBLICO";
+                    }
+
                     String adressa = jsonObject.get("adreca").getAsString();
                     String codiPostal = jsonObject.get("codiPostal").getAsString();
                     double longitud = jsonObject.get("coordenadesGeoX").getAsDouble();

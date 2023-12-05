@@ -1,6 +1,7 @@
 package com.teamadresinmonos.ieifinal.Controller;
 
 import com.teamadresinmonos.ieifinal.Extractor.ExtractorCAT;
+import com.teamadresinmonos.ieifinal.Extractor.ExtractorCV;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +15,9 @@ public class RRSSController {
     }
     @GetMapping(value = "/dunkCV")
     public static String embedstep(@RequestParam String filename) {
-        return "Filas insertadas: ";
+        try {
+            return "Filas insertadas: " + ExtractorCV.dunk(filename);
+        }catch(Exception e){return "oof";}
     }
     @GetMapping(value = "/dunkMUR")
     public static String embedprofile(@RequestParam String filename) {
