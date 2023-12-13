@@ -43,8 +43,13 @@ public class WrapperCAT {
                 centro.setCodiDistricteMunicipal(getNodeByTagName(nodosHijos,"codi_districte_municipal").getTextContent());
                 centro.setCoordenadesUtmX(Double.parseDouble(getNodeByTagName(nodosHijos,"coordenades_utm_x").getTextContent()));
                 centro.setCoordenadesUtmY(Double.parseDouble(getNodeByTagName(nodosHijos,"coordenades_utm_y").getTextContent()));
+                try{
                 centro.setCoordenadesGeoX(Double.parseDouble(getNodeByTagName(nodosHijos,"coordenades_geo_x").getTextContent()));
-                centro.setCoordenadesGeoY(Double.parseDouble(getNodeByTagName(nodosHijos,"coordenades_geo_y").getTextContent()));
+                centro.setCoordenadesGeoY(Double.parseDouble(getNodeByTagName(nodosHijos,"coordenades_geo_y").getTextContent()));}
+                catch(Exception e){
+                    centro.setCoordenadesGeoX(0.0);
+                    centro.setCoordenadesGeoY(0.0);
+                }
                 centro.setEstudis(getNodeByTagName(nodosHijos,"estudis").getTextContent());
                 centro.setGeoreferencia(getNodeByTagName(nodosHijos,"georefer_ncia").getTextContent());
                 //end dump

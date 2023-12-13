@@ -57,6 +57,7 @@ public class ExtractorMUR {
                 String descripcion = jsonObject.get("denLarga").getAsString();
 
                 String nombrelocalidad = jsonObject.get("loccen").getAsString();
+                String telefono = jsonObject.get("telcen").getAsString();
                 String codigolocalidad = "MURCIA" + jsonObject.get("cpcen").getAsString();
                 String nombreprovincia = "MURCIA";
                 String codigoprovincia = "MURCIA";
@@ -82,7 +83,7 @@ public class ExtractorMUR {
                 PreparedStatement statement3 = connection.prepareStatement("""
                     INSERT IGNORE INTO centro SET nombre = ?,
                      tipo = ?, direccion = ?, codigo_postal = ?, longitud = ?, latitud = ?,
-                     telefono = null, descripcion = ?, localidad = ?
+                     telefono = ?, descripcion = ?, localidad = ?
 """);
                 statement3.setString(1,nombre);
                 statement3.setString(2,naturalesa);
@@ -90,8 +91,9 @@ public class ExtractorMUR {
                 statement3.setString(4,codiPostal);
                 statement3.setDouble(5,longitud);
                 statement3.setDouble(6,latitud);
-                statement3.setString(7,descripcion);
-                statement3.setString(8,codigolocalidad);
+                statement3.setString(7,telefono);
+                statement3.setString(8,descripcion);
+                statement3.setString(9,codigolocalidad);
                 statement3.executeUpdate();
                 insertados++;
             }

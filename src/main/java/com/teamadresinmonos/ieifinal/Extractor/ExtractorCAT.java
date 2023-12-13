@@ -67,8 +67,13 @@ public class ExtractorCAT {
                     statement3.setString(2,naturalesa);
                     statement3.setString(3,adressa);
                     statement3.setString(4,codiPostal);
-                    statement3.setDouble(5,longitud);
-                    statement3.setDouble(6,latitud);
+                    if(longitud != 0.0){
+                        statement3.setDouble(5,longitud);
+                        statement3.setDouble(6,latitud);
+                    }else{
+                        statement3.setNull(5,0);
+                        statement3.setNull(6,0);
+                    }
                     statement3.setString(7,descripcion);
                     statement3.setString(8,codigolocalidad);
                     statement3.executeUpdate();
