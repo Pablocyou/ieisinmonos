@@ -83,7 +83,7 @@ public class ExtractorMUR {
                 PreparedStatement statement3 = connection.prepareStatement("""
                     INSERT IGNORE INTO centro SET nombre = ?,
                      tipo = ?, direccion = ?, codigo_postal = ?, longitud = ?, latitud = ?,
-                     telefono = ?, descripcion = ?, localidad = ?
+                     telefono = ?, descripcion = ?, localidad = ?, comunidad = ?
 """);
                 statement3.setString(1,nombre);
                 statement3.setString(2,naturalesa);
@@ -94,6 +94,7 @@ public class ExtractorMUR {
                 statement3.setString(7,telefono);
                 statement3.setString(8,descripcion);
                 statement3.setString(9,codigolocalidad);
+                statement3.setString(10, "MUR");
                 statement3.executeUpdate();
                 insertados++;
             }

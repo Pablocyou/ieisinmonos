@@ -20,7 +20,7 @@ public class SearchService {
 
     //region centro
     public static List<CentroBD> searchCentro(String nombre, String tipo, String direccion, int codigoPostal,
-                                              double longitud, double latitud, String telefono, String descripcion, String localidad){
+                                              double longitud, double latitud, String telefono, String descripcion, String localidad, String comunidad){
         List<CentroBD> sol = new ArrayList<>();
         connection = mariadbConnect.mdbconn();
 
@@ -119,6 +119,17 @@ public class SearchService {
                     WHERE p.localidad = ?
                 """)) {
                 return getCentroBDS(localidad, sol, statement);
+            } catch (Exception e) {
+                System.out.println("Error al recuperar info de la BD");
+                return new ArrayList<>();
+            }
+        }else if (!comunidad.isEmpty() && !comunidad.isBlank()) {
+            try (PreparedStatement statement = connection.prepareStatement("""
+                    SELECT *
+                    FROM centro p
+                    WHERE p.comunidad = ?
+                """)) {
+                return getCentroBDS(comunidad, sol, statement);
             } catch (Exception e) {
                 System.out.println("Error al recuperar info de la BD");
                 return new ArrayList<>();

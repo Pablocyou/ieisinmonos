@@ -76,8 +76,8 @@ public class mainController {
     @GetMapping(value = "/lookupCentro")
     public List<CentroBD> searchCentro(@RequestParam String nombre, @RequestParam String tipo, @RequestParam String direccion,
                                  @RequestParam int codigoPostal, @RequestParam double longitud, @RequestParam double latitud,
-                                 @RequestParam String telefono, @RequestParam String descripcion, @RequestParam String localidad){
-        return SearchService.searchCentro(nombre, tipo, direccion, codigoPostal, longitud, latitud, telefono, descripcion, localidad);
+                                 @RequestParam String telefono, @RequestParam String descripcion, @RequestParam String localidad, @RequestParam String comunidad){
+        return SearchService.searchCentro(nombre, tipo, direccion, codigoPostal, longitud, latitud, telefono, descripcion, localidad, comunidad);
     }
     @GetMapping(value = "/lookupLocalidad")
     public List<LocalidadBD> searchLocalidad(@RequestParam String codigo, @RequestParam String nombre, @RequestParam String provincia){

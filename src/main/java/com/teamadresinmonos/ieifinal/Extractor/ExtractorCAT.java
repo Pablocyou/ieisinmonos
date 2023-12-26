@@ -61,7 +61,7 @@ public class ExtractorCAT {
                     PreparedStatement statement3 = connection.prepareStatement("""
                     INSERT IGNORE INTO centro SET nombre = ?,
                      tipo = ?, direccion = ?, codigo_postal = ?, longitud = ?, latitud = ?,
-                     telefono = null, descripcion = ?, localidad = ?
+                     telefono = null, descripcion = ?, localidad = ?, comunidad = ?
 """);
                     statement3.setString(1,nombre);
                     statement3.setString(2,naturalesa);
@@ -76,6 +76,7 @@ public class ExtractorCAT {
                     }
                     statement3.setString(7,descripcion);
                     statement3.setString(8,codigolocalidad);
+                    statement3.setString(9, "CAT");
                     statement3.executeUpdate();
                     insertados++;
             }
