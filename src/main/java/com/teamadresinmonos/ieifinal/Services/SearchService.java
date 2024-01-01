@@ -30,116 +30,117 @@ public class SearchService {
                     FROM centro p
                     WHERE p.nombre = ?
                 """)) {
-                return getCentroBDS(nombre, sol, statement);
+                sol = getCentroBDS(nombre, sol, statement);
             } catch (Exception e) {
                 System.out.println("Error al recuperar info de la BD");
                 return new ArrayList<>();
             }
-        } else if (!tipo.isEmpty() && !tipo.isBlank()) {
+        } if (!tipo.isEmpty() && !tipo.isBlank()) {
             try (PreparedStatement statement = connection.prepareStatement("""
                     SELECT *
                     FROM centro p
                     WHERE p.tipo = ?
                 """)) {
-                return getCentroBDS(tipo, sol, statement);
+                sol = getCentroBDS(tipo, sol, statement);
             } catch (Exception e) {
                 System.out.println("Error al recuperar info de la BD");
                 return new ArrayList<>();
             }
-        } else if (!direccion.isEmpty() && !direccion.isBlank()) {
+        } if (!direccion.isEmpty() && !direccion.isBlank()) {
             try (PreparedStatement statement = connection.prepareStatement("""
                     SELECT *
                     FROM centro p
                     WHERE p.provincia = ?
                 """)) {
-                return getCentroBDS(direccion, sol, statement);
+                sol = getCentroBDS(direccion, sol, statement);
             } catch (Exception e) {
                 System.out.println("Error al recuperar info de la BD");
                 return new ArrayList<>();
             }
-        } else if (codigoPostal != 0) {
+        } if (codigoPostal != 0) {
             try (PreparedStatement statement = connection.prepareStatement("""
                     SELECT *
                     FROM centro p
                     WHERE p.codigo_postal = ?
                 """)) {
-                return getCentroBDS(codigoPostal + "", sol, statement);
+                sol = getCentroBDS(codigoPostal + "", sol, statement);
             } catch (Exception e) {
                 System.out.println("Error al recuperar info de la BD");
                 return new ArrayList<>();
             }
-        } else if (longitud != 69.420) {
+        } if (longitud != 69.420) {
             try (PreparedStatement statement = connection.prepareStatement("""
                     SELECT *
                     FROM centro p
                     WHERE p.longitud = ?
                 """)) {
-                return getCentroBDS(longitud + "", sol, statement);
+                sol = getCentroBDS(longitud + "", sol, statement);
             } catch (Exception e) {
                 System.out.println("Error al recuperar info de la BD");
                 return new ArrayList<>();
             }
-        } else if (latitud != 69.420) {
+        } if (latitud != 69.420) {
             try (PreparedStatement statement = connection.prepareStatement("""
                     SELECT *
                     FROM centro p
                     WHERE p.latitud = ?
                 """)) {
-                return getCentroBDS(latitud + "", sol, statement);
+                sol = getCentroBDS(latitud + "", sol, statement);
             } catch (Exception e) {
                 System.out.println("Error al recuperar info de la BD");
                 return new ArrayList<>();
             }
-        } else if (!telefono.isEmpty() && !telefono.isBlank()) {
+        } if (!telefono.isEmpty() && !telefono.isBlank()) {
             try (PreparedStatement statement = connection.prepareStatement("""
                     SELECT *
                     FROM centro p
                     WHERE p.telefono = ?
                 """)) {
-                return getCentroBDS(telefono, sol, statement);
+                sol = getCentroBDS(telefono, sol, statement);
             } catch (Exception e) {
                 System.out.println("Error al recuperar info de la BD");
                 return new ArrayList<>();
             }
-        } else if (!descripcion.isEmpty() && !descripcion.isBlank()) {
+        } if (!descripcion.isEmpty() && !descripcion.isBlank()) {
             try (PreparedStatement statement = connection.prepareStatement("""
                     SELECT *
                     FROM centro p
                     WHERE p.descripcion = ?
                 """)) {
-                return getCentroBDS(descripcion, sol, statement);
+                sol = getCentroBDS(descripcion, sol, statement);
             } catch (Exception e) {
                 System.out.println("Error al recuperar info de la BD");
                 return new ArrayList<>();
             }
-        }else if (!localidad.isEmpty() && !localidad.isBlank()) {
+        } if (!localidad.isEmpty() && !localidad.isBlank()) {
             try (PreparedStatement statement = connection.prepareStatement("""
                     SELECT *
                     FROM centro p
                     WHERE p.localidad = ?
                 """)) {
-                return getCentroBDS(localidad, sol, statement);
+                sol = getCentroBDS(localidad, sol, statement);
             } catch (Exception e) {
                 System.out.println("Error al recuperar info de la BD");
                 return new ArrayList<>();
             }
-        }else if (!comunidad.isEmpty() && !comunidad.isBlank()) {
+        } if (!comunidad.isEmpty() && !comunidad.isBlank()) {
             try (PreparedStatement statement = connection.prepareStatement("""
                     SELECT *
                     FROM centro p
                     WHERE p.comunidad = ?
                 """)) {
-                return getCentroBDS(comunidad, sol, statement);
+                sol = getCentroBDS(comunidad, sol, statement);
             } catch (Exception e) {
                 System.out.println("Error al recuperar info de la BD");
                 return new ArrayList<>();
             }
         }
-        return new ArrayList<>();
+        return sol;
     }
 
-    private static List<CentroBD> getCentroBDS(String input, List<CentroBD> sol, PreparedStatement statement) throws SQLException {
+    private static List<CentroBD> getCentroBDS(String input, List<CentroBD> sol, PreparedStatement statement) throws Exception {
         CentroBD item;
+        List<CentroBD> sol2 = new ArrayList<>();
         statement.setString(1, input);
         ResultSet resultSet = statement.executeQuery();
 
@@ -162,9 +163,11 @@ public class SearchService {
                 String descripcion = resultSet.getString("descripcion");
                 String localidad = resultSet.getString("localidad");
                 item = new CentroBD(nombre, tipo, direccion, cp, longitud, latitud, telefono, descripcion, localidad);
-                sol.add(item);
+                if(sol.contains(item) || sol.isEmpty())
+                    sol2.add(item);
             } while (resultSet.next());
-            return sol;
+            if(sol2.isEmpty()) throw new Exception();
+            return sol2;
         }
     }
     //endregion
@@ -181,40 +184,41 @@ public class SearchService {
                     FROM localidad p
                     WHERE p.codigo = ?
                 """)) {
-                return getLocalidadBDS(incodigo, sol, statement);
+                sol = getLocalidadBDS(incodigo, sol, statement);
             } catch (Exception e) {
                 System.out.println("Error al recuperar info de la BD");
                 return new ArrayList<>();
             }
-        } else if (!innombre.isEmpty() && !innombre.isBlank()) {
+        } if (!innombre.isEmpty() && !innombre.isBlank()) {
             try (PreparedStatement statement = connection.prepareStatement("""
                     SELECT *
                     FROM localidad p
                     WHERE p.nombre = ?
                 """)) {
-                return getLocalidadBDS(innombre, sol, statement);
+                sol = getLocalidadBDS(innombre, sol, statement);
             } catch (Exception e) {
                 System.out.println("Error al recuperar info de la BD");
                 return new ArrayList<>();
             }
-        } else if (!inProvincia.isEmpty() && !inProvincia.isBlank()) {
+        } if (!inProvincia.isEmpty() && !inProvincia.isBlank()) {
             try (PreparedStatement statement = connection.prepareStatement("""
                     SELECT *
                     FROM localidad p
                     WHERE p.provincia = ?
                 """)) {
-                return getLocalidadBDS(inProvincia, sol, statement);
+                sol = getLocalidadBDS(inProvincia, sol, statement);
             } catch (Exception e) {
                 System.out.println("Error al recuperar info de la BD");
                 return new ArrayList<>();
             }
         }
 
-        return new ArrayList<>();
+        return sol;
     }
 
-    private static List<LocalidadBD> getLocalidadBDS(String input, List<LocalidadBD> sol, PreparedStatement statement) throws SQLException {
+    private static List<LocalidadBD> getLocalidadBDS(String input, List<LocalidadBD> sol, PreparedStatement statement) throws Exception {
         LocalidadBD item;
+        List<LocalidadBD> sol2 = new ArrayList<>();
         statement.setString(1, input);
         ResultSet resultSet = statement.executeQuery();
 
@@ -231,9 +235,11 @@ public class SearchService {
                 String nombre = resultSet.getString("nombre");
                 String provincia = resultSet.getString("provincia");
                 item = new LocalidadBD(codigo, nombre, provincia);
-                sol.add(item);
+                if(sol.contains(item) || sol.isEmpty())
+                    sol2.add(item);
             } while (resultSet.next());
-            return sol;
+            if(sol2.isEmpty()) throw new Exception();
+            return sol2;
         }
     }
     //endregion
@@ -250,28 +256,29 @@ public class SearchService {
                     FROM provincia p
                     WHERE p.codigo = ?
                 """)) {
-                return getProvinciaBDS(incodigo, sol, statement);
+                sol = getProvinciaBDS(incodigo, sol, statement);
             } catch (Exception e) {
                 System.out.println("Error al recuperar info de la BD");
                 return new ArrayList<>();
             }
-        } else if (!innombre.isEmpty() && !innombre.isBlank()) {
+        } if (!innombre.isEmpty() && !innombre.isBlank()) {
             try (PreparedStatement statement = connection.prepareStatement("""
                     SELECT *
                     FROM provincia p
                     WHERE p.nombre = ?
                 """)) {
-                return getProvinciaBDS(innombre, sol, statement);
+                sol = getProvinciaBDS(innombre, sol, statement);
             } catch (Exception e) {
                 System.out.println("Error al recuperar info de la BD");
                 return new ArrayList<>();
             }
         }
-        return new ArrayList<>();
+        return sol;
     }
 
-    private static List<ProvinciaBD> getProvinciaBDS(String innombre, List<ProvinciaBD> sol, PreparedStatement statement) throws SQLException {
+    private static List<ProvinciaBD> getProvinciaBDS(String innombre, List<ProvinciaBD> sol, PreparedStatement statement) throws Exception {
         ProvinciaBD item;
+        List<ProvinciaBD> sol2 = new ArrayList<>();
         statement.setString(1, innombre);
         ResultSet resultSet = statement.executeQuery();
 
@@ -287,9 +294,11 @@ public class SearchService {
                 String codigo = resultSet.getString("codigo");
                 String nombre = resultSet.getString("nombre");
                 item = new ProvinciaBD(codigo, nombre);
-                sol.add(item);
+                if(sol.contains(item) || sol.isEmpty())
+                    sol2.add(item);
             } while (resultSet.next());
-            return sol;
+            if(sol2.isEmpty()) throw new Exception();
+            return sol2;
         }
     }
     //endregion
