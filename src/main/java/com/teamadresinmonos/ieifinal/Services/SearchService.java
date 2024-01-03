@@ -156,7 +156,9 @@ public class SearchService {
                 String nombre = resultSet.getString("nombre");
                 String tipo = resultSet.getString("tipo");
                 String direccion = resultSet.getString("direccion");
-                int cp = resultSet.getInt("codigo_postal");
+                int cp = 0;
+                try{
+                cp = resultSet.getInt("codigo_postal");}catch(Exception ignored){}
                 double longitud = resultSet.getDouble("longitud");
                 double latitud = resultSet.getDouble("latitud");
                 String telefono = resultSet.getString("telefono");
