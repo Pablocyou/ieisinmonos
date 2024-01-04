@@ -124,12 +124,10 @@ public class SearchService {
                 return new ArrayList<>();
             }
         } if (!comunidad.isEmpty() && !comunidad.isBlank()) {
-            try (PreparedStatement statement = connection.prepareStatement("""
-                    SELECT *
-                    FROM centro p
-                    WHERE p.comunidad = ?
-                """)) {
-                sol = getCentroBDS(comunidad, sol, statement);
+            String comunidad2 = comunidad.replace(",", "','");
+            String sql = "SELECT * FROM centro p WHERE p.comunidad IN ('" + comunidad2 + "')";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                sol = getCentroBDS("comunidad", sol, statement);
             } catch (Exception e) {
                 System.out.println("Error al recuperar info de la BD");
                 return new ArrayList<>();
@@ -141,7 +139,8 @@ public class SearchService {
     private static List<CentroBD> getCentroBDS(String input, List<CentroBD> sol, PreparedStatement statement) throws Exception {
         CentroBD item;
         List<CentroBD> sol2 = new ArrayList<>();
-        statement.setString(1, input);
+        if(input.equals("comunidad"))
+            statement.setString(1, input);
         ResultSet resultSet = statement.executeQuery();
 
         if(!resultSet.next()){
