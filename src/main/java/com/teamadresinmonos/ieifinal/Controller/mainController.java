@@ -22,8 +22,10 @@ public class mainController {
     public mainController(DataManagerService dataManagementService){
         this.dataManagerService = dataManagementService;
     }
+
+    //Método para insertar en la base de datos
     @RequestMapping(value = "/dunk", method = RequestMethod.POST, consumes = "application/json")
-    public String dunkCat(@RequestBody Map<String,String> filename) {
+    public String dunk(@RequestBody Map<String,String> filename) {
         try {
             System.out.println(filename);
             System.out.println("CV: " + filename.get("filenameCV"));
