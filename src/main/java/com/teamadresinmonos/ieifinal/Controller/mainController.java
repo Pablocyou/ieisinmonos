@@ -5,12 +5,13 @@ import com.teamadresinmonos.ieifinal.Entities.BaseDatos.LocalidadBD;
 import com.teamadresinmonos.ieifinal.Entities.BaseDatos.ProvinciaBD;
 import com.teamadresinmonos.ieifinal.Services.DataManagerService;
 import com.teamadresinmonos.ieifinal.Services.SearchService;
+import com.teamadresinmonos.ieifinal.Util.Config;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class mainController {
@@ -21,53 +22,32 @@ public class mainController {
     public mainController(DataManagerService dataManagementService){
         this.dataManagerService = dataManagementService;
     }
-    @GetMapping(value = "/dunkCAT")
-    public String dunkCat(@RequestParam String filename) {
-        return "Filas insertadas: " + dataManagerService.dunkCAT(filename);
-    }
-    @GetMapping(value = "/dunkCV")
-    public String dunkCV(@RequestParam String filename) {
+    @RequestMapping(value = "/dunk", method = RequestMethod.POST, consumes = "application/json")
+    public String dunkCat(@RequestBody Map<String,String> filename) {
         try {
-            return "Filas insertadas: " + dataManagerService.dunkCV(filename);
-        }catch(Exception e){return "oof";}
-    }
-    @GetMapping(value = "/dunkMUR")
-    public String dunkMUR(@RequestParam String filename) {
-        try {
-            return "Filas insertadas: " + dataManagerService.dunkMUR(filename);
-        }catch(Exception e){return "oof";}
-    }
+            System.out.println(filename);
+            System.out.println("CV: " + filename.get("filenameCV"));
+            System.out.println("CAT: " + filename.get("filenameCAT"));
+            System.out.println("MUR: " + filename.get("filenameMUR"));
+            int a = 0;
+            int b = 0;
+            int c = 0;
+            File f = new File(Config.getDataLocation() + filename.get("filenameCV"));
+            if(f.exists() && !f.isDirectory()) {
+                a = dataManagerService.dunkCV(filename.get("filenameCV"));
+            }
 
-    @GetMapping(value = "/dunkMUR_CV")
-    public String dunkMUR_CV(@RequestParam String filenameMUR, @RequestParam String filenameCV) {
-        try {
-            int a = dataManagerService.dunkCV(filenameCV);
-            return "Filas insertadas: " + (dataManagerService.dunkMUR(filenameMUR) + a);
-        }catch(Exception e){return "oof";}
-    }
+            f = new File(Config.getDataLocation() + filename.get("filenameCAT"));
+            if(f.exists() && !f.isDirectory()) {
+                b = dataManagerService.dunkCAT(filename.get("filenameCAT"));
+            }
 
-    @GetMapping(value = "/dunkMUR_CAT")
-    public String dunkMUR_CAT(@RequestParam String filenameMUR, @RequestParam String filenameCAT) {
-        try {
-            int a = dataManagerService.dunkCAT(filenameCAT);
-            return "Filas insertadas: " + (dataManagerService.dunkMUR(filenameMUR) + a);
-        }catch(Exception e){return "oof";}
-    }
+            f = new File(Config.getDataLocation() + filename.get("filenameMUR"));
+            if(f.exists() && !f.isDirectory()) {
+                c = dataManagerService.dunkMUR(filename.get("filenameMUR"));
+            }
 
-    @GetMapping(value = "/dunkCV_CAT")
-    public String dunkCV_CAT(@RequestParam String filenameCV, @RequestParam String filenameCAT) {
-        try {
-            int a = dataManagerService.dunkCV(filenameCV);
-            return "Filas insertadas: " + (dataManagerService.dunkCAT(filenameCAT) + a);
-        }catch(Exception e){return "oof";}
-    }
-
-    @GetMapping(value = "/dunkALL")
-    public String dunkALL(@RequestParam String filenameMUR, @RequestParam String filenameCV, @RequestParam String filenameCAT) {
-        try {
-            int a = dataManagerService.dunkCV(filenameCV);
-            int b = dataManagerService.dunkCAT(filenameCAT);
-            return "Filas insertadas: " + (dataManagerService.dunkMUR(filenameMUR) + a + b);
+            return "Filas insertadas: " + (c + a + b);
         }catch(Exception e){return "oof";}
     }
 
