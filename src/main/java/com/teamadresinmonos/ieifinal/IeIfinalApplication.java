@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class IeIfinalApplication {
-    private static Config config = new Config();
     public static void main(String[] args) {
         SpringApplication.run(IeIfinalApplication.class, args);
-        if(config.inDebug()){System.out.println("=-= RUNNING IN DEBUG MODE =-=");}else{System.out.println("-=- RUNNING IN IEI MODE -=-");}
+        //punto de entrada de la aplicacion
+        if(Config.inDebug()){System.out.println("=-= RUNNING IN DEBUG MODE =-=");}else{System.out.println("-=- RUNNING IN IEI MODE -=-");}
         System.out.println("path to resources: " + Config.getResourcesLocation());
         System.out.println("Corriendo sobre: " + System.getProperty("os.name"));
         System.out.println("Recuerda poner los archivos en C:\\ (el db.properties) y en C:\\Data\\ los datos");
@@ -17,6 +17,8 @@ public class IeIfinalApplication {
         System.out.println("y zlongCAT.xml, zlongCV.csv, zlongMUR.json para las versiones largas");
         System.out.println("puedes poner nuevos datos y probarlos diciendo el nombre en la peticion web");
         System.out.println("http://localhost:8080/dunkMUR?filename=MUR.json");
+        System.out.println("Para ver la documentacion accede a la siguiente URL");
+        System.out.println("http://localhost:8080/swagger-ui/index.html");
     }
 
 }

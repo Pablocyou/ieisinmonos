@@ -3,8 +3,6 @@ package com.teamadresinmonos.ieifinal.Controller;
 import com.teamadresinmonos.ieifinal.Entities.BaseDatos.CentroBD;
 import com.teamadresinmonos.ieifinal.Entities.BaseDatos.LocalidadBD;
 import com.teamadresinmonos.ieifinal.Entities.BaseDatos.ProvinciaBD;
-import com.teamadresinmonos.ieifinal.Extractor.ExtractorCV;
-import com.teamadresinmonos.ieifinal.Extractor.ExtractorMUR;
 import com.teamadresinmonos.ieifinal.Services.DataManagerService;
 import com.teamadresinmonos.ieifinal.Services.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;

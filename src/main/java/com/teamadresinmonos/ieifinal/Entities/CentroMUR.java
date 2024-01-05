@@ -4,6 +4,11 @@ import java.util.List;
 
 public class CentroMUR {
 
+    /**
+     * Clase que representa un Centro de MUR
+     * */
+
+
     private double s;
     private String codcen;
     private String dencen;

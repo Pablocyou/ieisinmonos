@@ -95,8 +95,9 @@ public class ExtractorMUR {
                 statement3.setString(8,descripcion);
                 statement3.setString(9,codigolocalidad);
                 statement3.setString(10, "MUR");
-                statement3.executeUpdate();
-                insertados++;
+                int res = statement3.executeUpdate();
+                if(res == 1)
+                    insertados++;
             }
             catch(Exception e){System.out.println("EXCEPTION EXTRACTOR MUR: " + e);}
         }

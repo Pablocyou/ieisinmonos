@@ -2,6 +2,10 @@ package com.teamadresinmonos.ieifinal.Entities;
 
 public class CentroCV {
 
+    /**
+     * Clase que representa un Centro de CV
+     * */
+
     private String codigo;
     private String denominacionGenericaEs;
     private String denominacionGenericaVal;

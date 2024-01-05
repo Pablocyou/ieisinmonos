@@ -3,6 +3,9 @@ package com.teamadresinmonos.ieifinal.Entities.BaseDatos;
 import java.util.Objects;
 
 public class CentroBD {
+    /**
+     * Clase que representa un Centro según está en la BD
+     * */
     String nombre;
     String tipo;
     String direccion;

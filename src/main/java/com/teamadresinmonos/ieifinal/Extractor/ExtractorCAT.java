@@ -77,8 +77,9 @@ public class ExtractorCAT {
                     statement3.setString(7,descripcion);
                     statement3.setString(8,codigolocalidad);
                     statement3.setString(9, "CAT");
-                    statement3.executeUpdate();
-                    insertados++;
+                    int res = statement3.executeUpdate();
+                    if(res == 1)
+                        insertados++;
             }
             catch(Exception e){System.out.println("EXCEPTION EXTRACTOR CAT: " + e);}
         }

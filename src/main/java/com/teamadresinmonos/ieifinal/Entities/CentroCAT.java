@@ -2,6 +2,11 @@ package com.teamadresinmonos.ieifinal.Entities;
 
 public class CentroCAT {
 
+    /**
+     * Clase que representa un Centro de CAT
+     * */
+
+
     private String codiCentre;
     private String denominaciCompleta;
     private String nomNaturalesa;

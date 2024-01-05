@@ -3,6 +3,11 @@ package com.teamadresinmonos.ieifinal.Entities.BaseDatos;
 import java.util.Objects;
 
 public class LocalidadBD {
+
+    /**
+     * Clase que representa una Localidad según está en la BD
+     * */
+
     String codigo;
     String nombre;
     String provincia;

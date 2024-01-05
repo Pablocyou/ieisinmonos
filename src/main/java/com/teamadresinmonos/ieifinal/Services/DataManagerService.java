@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DataManagerService {
+    /**
+     * Clase para el desacople de los métodos de la API con la lógica: Insertar datos en DB
+     * */
 
     public static int dunkCAT(String filename){
         return ExtractorCAT.dunk(filename);

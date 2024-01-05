@@ -8,6 +8,11 @@ import java.util.Objects;
 import java.util.Properties;
 public class Config {
     //Sí, he copiado esta clase entera del proyecto de PSW y no tengo ninguna clase de remordimiento
+    /**
+     * Clase para según en qué entorno estemos acceder a los archivos en una ruto u otra
+     * Detecta si estamos en un Windows Server 2016 (IEI mode) o no (DEBUG)
+     * La ruta por defecto para los archivos en Server es C:\ y C:\Data\
+     * */
 
     Properties properties = new Properties();
     File file;

@@ -16,6 +16,14 @@ import java.util.List;
 @Service
 public class SearchService {
 
+    /**
+     * Clase para el desacople de los métodos de la API con la lógica: Recuperar datos de DB
+     *
+     * Pueden buscarse Provincias, Localidades y Centros. Solo se usan en el frontend el buscar Centros
+     * El único campo que admite varios valores es el de provincia en buscar centro
+     * Todas las consultas siguen un cuerpo similar
+     * */
+
     private static Connection connection;
 
     //region centro

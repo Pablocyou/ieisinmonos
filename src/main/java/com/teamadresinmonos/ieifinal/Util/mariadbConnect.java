@@ -5,6 +5,12 @@ import java.sql.DriverManager;
 import java.util.Random;
 
 public class mariadbConnect {
+    /**
+     * Esta clase se encarga de la conexción con la BD de MariaDB (o cualquier BD SQL)
+     * Copiada del proyecto de PIN, por eso lo del buffering de conexiones y algunas cosas de logging
+     * como el picocons (Pico de conexciones) o cons (conexiones)
+     * No es relevante para IEI
+     * */
     private static Config config = new Config();
 
     private static int picocons = 0;

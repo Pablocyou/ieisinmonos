@@ -53,39 +53,40 @@ public class WrapperCV {
             ObjectMapper mapper = new ObjectMapper();
             String line = br.readLine();
             line = br.readLine();
+            //leemos linea a linea el CSV
             while (line != null) {
                 String[] fields = line.split(";");
                 int i=0;
-                for (String a:fields) {
-                    if(i == 0) codigo = a;
-                    if(i == 1) DENOMINACION_GENERICA_ES = a;
-                    if(i == 2) DENOMINACION_GENERICA_VAL = a;
-                    if(i == 3) DENOMINACION_ESPECIFICA = a;
-                    if(i == 4) DENOMINACION = a;
-                    if(i == 5) regimen = a;
-                    if(i == 6) tipoVia = a;
-                    if(i == 7) direccion = a;
-                    if(i == 8) numero =  a;
-                    if(i == 9) codigoPostal = a;
+                for (String field:fields) {
+                    if(i == 0) codigo = field;
+                    if(i == 1) DENOMINACION_GENERICA_ES = field;
+                    if(i == 2) DENOMINACION_GENERICA_VAL = field;
+                    if(i == 3) DENOMINACION_ESPECIFICA = field;
+                    if(i == 4) DENOMINACION = field;
+                    if(i == 5) regimen = field;
+                    if(i == 6) tipoVia = field;
+                    if(i == 7) direccion = field;
+                    if(i == 8) numero =  field;
+                    if(i == 9) codigoPostal = field;
                     try {
-                        if (i == 10) nombreLocalidad = a;
+                        if (i == 10) nombreLocalidad = field;
                     }catch (Exception e){
                         nombreLocalidad = "";
                     }
                     try {
-                        if (i == 11) nombreProvincia = a.substring(0, a.indexOf("/"));
+                        if (i == 11) nombreProvincia = field.substring(0, field.indexOf("/"));
                     }catch (Exception e) {nombreProvincia = "";}
                     try {
-                        if (i == 12) telefono = a;
+                        if (i == 12) telefono = field;
                     }catch(Exception e) {telefono = null;}
 
-                    if(i == 13) FAX = a;
-                    if(i == 14) CODEDIFICACION = a;
-                    if(i == 15) TITULARIDAD = a;
-                    if(i == 16) CIF =  a;
-                    if(i == 17) COMARCA = a;
-                    if(i == 18) URLES =  a;
-                    if(i == 19) URLVA = a;
+                    if(i == 13) FAX = field;
+                    if(i == 14) CODEDIFICACION = field;
+                    if(i == 15) TITULARIDAD = field;
+                    if(i == 16) CIF =  field;
+                    if(i == 17) COMARCA = field;
+                    if(i == 18) URLES =  field;
+                    if(i == 19) URLVA = field;
                     //hacer transf de csv a objeto
                     /*
                     CODIGO;                                 0
@@ -111,6 +112,7 @@ public class WrapperCV {
                     */
                     i++;
                 }
+                //añadimos el nuevo centro creado a la lista como String de JSON
                 sol.add(mapper.writeValueAsString(new CentroCV(codigo,DENOMINACION_GENERICA_ES,DENOMINACION_GENERICA_VAL,
                         DENOMINACION_ESPECIFICA,DENOMINACION,regimen,tipoVia,direccion,numero,codigoPostal,
                         nombreLocalidad,nombreProvincia,telefono,FAX,CODEDIFICACION,TITULARIDAD,CIF,COMARCA,URLES,URLVA)));
@@ -123,7 +125,8 @@ public class WrapperCV {
         return sol;
 
     }
-    
+
+    //Método para reiniciar los atributos entre iteraciones
     private static void attreset(){
         //viejos
         DENOMINACION ="";
