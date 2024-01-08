@@ -26,13 +26,13 @@ public class ExtractorCV {
         List<String> lista = WrapperCV.kebab(filename);
         int insertados = 0;
 
-        WebDriverManager.edgedriver().setup();
-        driver = new EdgeDriver();
-        driver.get("https://www.coordenadas-gps.com/");
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-        Thread.sleep(2000);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("javascript:window.scrollBy(750,950)");
+        //WebDriverManager.edgedriver().setup();
+        //driver = new EdgeDriver();
+        //driver.get("https://www.coordenadas-gps.com/");
+        //driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        //Thread.sleep(2000);
+        //JavascriptExecutor js = (JavascriptExecutor) driver;
+        //js.executeScript("javascript:window.scrollBy(750,950)");
 
         lista.remove(0);
         while(lista.size()>0) {
@@ -55,13 +55,16 @@ public class ExtractorCV {
                 String direccion = jsonObject.get("tipoVia").getAsString() + " " +
                         jsonObject.get("direccion").getAsString() + " " +
                         jsonObject.get("numero").getAsString();
+                /*
                 try {
                     seleniumCore(driver, direccion);
                 }catch(Exception e){
                     driver = resetBrowser();
                     seleniumCore(driver,direccion);
                 }
-
+                */
+                latitud=39.46975;
+                longitud=-0.37739;
                 //endregion
                 String telefono = jsonObject.get("telefono").getAsString();
                 String descripcion = "Fax y cif: " + jsonObject.get("fax").getAsString() + ", " + jsonObject.get("cif").getAsString();
