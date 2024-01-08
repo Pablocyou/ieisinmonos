@@ -27,6 +27,7 @@ public class mainController {
     @RequestMapping(value = "/dunk", method = RequestMethod.POST, consumes = "application/json")
     public String dunk(@RequestBody Map<String,String> filename) {
         try {
+            String msgCV = "";
             System.out.println(filename);
             System.out.println("CV: " + filename.get("filenameCV"));
             System.out.println("CAT: " + filename.get("filenameCAT"));
@@ -39,6 +40,9 @@ public class mainController {
                 a = dataManagerService.dunkCV(filename.get("filenameCV"));
             }
 
+            if(a <0){msgCV = "Fallo de conexión con www.coordenadas-gps.com"; a = -a;}
+
+
             f = new File(Config.getDataLocation() + filename.get("filenameCAT"));
             if(f.exists() && !f.isDirectory()) {
                 b = dataManagerService.dunkCAT(filename.get("filenameCAT"));
@@ -49,8 +53,10 @@ public class mainController {
                 c = dataManagerService.dunkMUR(filename.get("filenameMUR"));
             }
 
-            return "Filas insertadas: " + (c + a + b);
-        }catch(Exception e){return "oof";}
+            return "Filas insertadas: " + (c + a + b) + " " + msgCV;
+        }catch(Exception e){
+            e.printStackTrace();
+            return "oof";}
     }
 
     @GetMapping(value = "/lookupCentro")

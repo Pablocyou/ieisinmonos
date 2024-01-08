@@ -11,6 +11,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.edge.EdgeDriver;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.time.Duration;
@@ -26,13 +30,19 @@ public class ExtractorCV {
         List<String> lista = WrapperCV.kebab(filename);
         int insertados = 0;
 
-        //WebDriverManager.edgedriver().setup();
-        //driver = new EdgeDriver();
-        //driver.get("https://www.coordenadas-gps.com/");
-        //driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-        //Thread.sleep(2000);
-        //JavascriptExecutor js = (JavascriptExecutor) driver;
-        //js.executeScript("javascript:window.scrollBy(750,950)");
+        boolean online = false;
+        try{
+        if(isSiteUp(new URL("https://www.coordenadas-gps.com/"))) online = true;}catch(Exception ignored){}
+
+        if(online) {
+            WebDriverManager.edgedriver().setup();
+            driver = new EdgeDriver();
+            driver.get("https://www.coordenadas-gps.com/");
+            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+            Thread.sleep(2000);
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            js.executeScript("javascript:window.scrollBy(750,950)");
+        }
 
         lista.remove(0);
         while(lista.size()>0) {
@@ -55,16 +65,19 @@ public class ExtractorCV {
                 String direccion = jsonObject.get("tipoVia").getAsString() + " " +
                         jsonObject.get("direccion").getAsString() + " " +
                         jsonObject.get("numero").getAsString();
-                /*
-                try {
-                    seleniumCore(driver, direccion);
-                }catch(Exception e){
-                    driver = resetBrowser();
-                    seleniumCore(driver,direccion);
-                }
-                */
+
                 latitud=39.46975;
                 longitud=-0.37739;
+
+                if(online) {
+                    try {
+                        seleniumCore(driver, direccion);
+                    } catch (Exception e) {
+                        driver = resetBrowser();
+                        seleniumCore(driver, direccion);
+                    }
+                }
+
                 //endregion
                 String telefono = jsonObject.get("telefono").getAsString();
                 String descripcion = "Fax y cif: " + jsonObject.get("fax").getAsString() + ", " + jsonObject.get("cif").getAsString();
@@ -84,7 +97,6 @@ public class ExtractorCV {
                 else
                     codigoprovincia = ("0" + jsonObject.get("codigoPostal").getAsString()).substring(0,2);
 
-                //codigoprovincia = jsonObject.get("codigoPostal").getAsString().substring(0,2);
 
                 //Insertamos la provincia solo si no esta, si ya esta pasamos
                 PreparedStatement statement = connection.prepareStatement("""
@@ -125,6 +137,7 @@ public class ExtractorCV {
             }
             catch(Exception e){System.out.println("EXCEPTION EXTRACTOR CV: " + e);}
         }
+        if(!online){return -1*insertados;}
         driver.quit();
         return insertados;
     }
@@ -148,7 +161,6 @@ public class ExtractorCV {
         WebElement textBoxlat = driver.findElement(By.xpath("//*[@id=\"latitude\"]"));
         WebElement textBoxlong = driver.findElement(By.xpath("//*[@id=\"longitude\"]"));
         Thread.sleep(100);
-        //textBox.clear();
         Thread.sleep(100);
         textBox.clear();
         textBox.sendKeys(direccion);
@@ -159,6 +171,20 @@ public class ExtractorCV {
         longitud = Double.valueOf(textBoxlong.getAttribute("value"));
     }
 
-
+    public static boolean isSiteUp(URL site) {
+        try {
+            HttpURLConnection conn = (HttpURLConnection) site.openConnection();
+            conn.getContent();
+            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                return true;
+            }
+            return false;
+        } catch (SocketTimeoutException tout) {
+            return false;
+        } catch (IOException ioex) {
+            // You may decide on more specific behaviour...
+            return false;
+        }
+    }
 
 }
