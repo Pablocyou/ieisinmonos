@@ -44,7 +44,6 @@ public class ExtractorCV {
             js.executeScript("javascript:window.scrollBy(750,950)");
         }
 
-        lista.remove(0);
         while(lista.size()>0) {
             try {
                 String current = lista.remove(0);
@@ -83,20 +82,22 @@ public class ExtractorCV {
                 String descripcion = "Fax y cif: " + jsonObject.get("fax").getAsString() + ", " + jsonObject.get("cif").getAsString();
                 String nombrelocalidad = jsonObject.get("localidad").getAsString();
                 String codigolocalidad;
-                if(jsonObject.get("codigoPostal").getAsString().length()==5)
-                    codigolocalidad = jsonObject.get("codigoPostal").getAsString().substring(2,5);
-                else
-                    codigolocalidad = ("0" + jsonObject.get("codigoPostal").getAsString()).substring(2,5);
+                try {
+                    if (jsonObject.get("codigoPostal").getAsString().length() == 5)
+                        codigolocalidad = jsonObject.get("codigoPostal").getAsString().substring(2, 5);
+                    else
+                        codigolocalidad = ("0" + jsonObject.get("codigoPostal").getAsString()).substring(2, 5);
+                }catch(StringIndexOutOfBoundsException e){codigolocalidad = "_";}
 
                 String nombreprovincia = jsonObject.get("provincia").getAsString();
 
                 String codigoprovincia;
-
+                try{
                 if(jsonObject.get("codigoPostal").getAsString().length()==5)
                     codigoprovincia = jsonObject.get("codigoPostal").getAsString().substring(0,2);
                 else
                     codigoprovincia = ("0" + jsonObject.get("codigoPostal").getAsString()).substring(0,2);
-
+                }catch(StringIndexOutOfBoundsException e){codigoprovincia = "_";}
 
                 //Insertamos la provincia solo si no esta, si ya esta pasamos
                 PreparedStatement statement = connection.prepareStatement("""
