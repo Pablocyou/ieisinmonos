@@ -8,16 +8,38 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.File;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class WrapperCAT {
-    public static List<String> kebab(String filename){
+    public static List<String> kebab(String filename) {
+        FileInputStream inputFileStream = null;
         try {
             System.out.println("Wrapper CAT: " + Config.getDataLocation() + filename);
             ObjectMapper mapper = new ObjectMapper();
-            Document domDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(Config.getDataLocation() + filename));
+
+            String dec = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+
+            inputFileStream = new FileInputStream(Config.getDataLocation() + filename);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputFileStream));
+            // Skip the first line
+            reader.readLine();
+            // Convert the remaining content into a Stream<String>
+            Stream<String> xmlStream = reader.lines();
+            // Now you have a Stream<String> with the remaining lines of the XML file
+            // You can process it as needed
+            String xmlContent = dec + xmlStream.collect(Collectors.joining(System.lineSeparator()));
+            // Close the reader when done
+            reader.close();
+
+            InputStream streamFinal = new ByteArrayInputStream(xmlContent.getBytes(StandardCharsets.UTF_8));
+
+
+            Document domDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(streamFinal);
             NodeList rows = domDocument.getElementsByTagName("row");
             List<String> jsonsTransformados = new ArrayList<>();
 
@@ -30,34 +52,38 @@ public class WrapperCAT {
                 //begin dump
                 System.out.println("WRAPPER CAT: " + i);
                 centro.setCodiCentre(getNodeByTagName(nodosHijos, "codi_centre").getTextContent());
-                centro.setDenominaciCompleta(getNodeByTagName(nodosHijos,"denominaci_completa").getTextContent());
-                centro.setNomNaturalesa(getNodeByTagName(nodosHijos,"nom_naturalesa").getTextContent());
-                centro.setNomTitularitat(getNodeByTagName(nodosHijos,"nom_titularitat").getTextContent());
-                centro.setAdreca(getNodeByTagName(nodosHijos,"adre_a").getTextContent());
-                centro.setCodiPostal(getNodeByTagName(nodosHijos,"codi_postal").getTextContent());
-                centro.setNomComarca(getNodeByTagName(nodosHijos,"nom_comarca").getTextContent());
-                centro.setCodiComarca(getNodeByTagName(nodosHijos,"codi_comarca").getTextContent());
-                centro.setCodiMunicipi5Digits(getNodeByTagName(nodosHijos,"codi_municipi_5_digits").getTextContent());
-                centro.setCodiMunicipi6Digits(getNodeByTagName(nodosHijos,"codi_municipi_6_digits").getTextContent());
-                centro.setNomMunicipi(getNodeByTagName(nodosHijos,"nom_municipi").getTextContent());
-                centro.setCodiDistricteMunicipal(getNodeByTagName(nodosHijos,"codi_districte_municipal").getTextContent());
-                centro.setCoordenadesUtmX(Double.parseDouble(getNodeByTagName(nodosHijos,"coordenades_utm_x").getTextContent()));
-                centro.setCoordenadesUtmY(Double.parseDouble(getNodeByTagName(nodosHijos,"coordenades_utm_y").getTextContent()));
-                try{//hay algunos centros que no tienen coords
-                centro.setCoordenadesGeoX(Double.parseDouble(getNodeByTagName(nodosHijos,"coordenades_geo_x").getTextContent()));
-                centro.setCoordenadesGeoY(Double.parseDouble(getNodeByTagName(nodosHijos,"coordenades_geo_y").getTextContent()));}
-                catch(Exception e){
+                centro.setDenominaciCompleta(getNodeByTagName(nodosHijos, "denominaci_completa").getTextContent());
+                centro.setNomNaturalesa(getNodeByTagName(nodosHijos, "nom_naturalesa").getTextContent());
+                centro.setNomTitularitat(getNodeByTagName(nodosHijos, "nom_titularitat").getTextContent());
+                centro.setAdreca(getNodeByTagName(nodosHijos, "adre_a").getTextContent());
+                centro.setCodiPostal(getNodeByTagName(nodosHijos, "codi_postal").getTextContent());
+                centro.setNomComarca(getNodeByTagName(nodosHijos, "nom_comarca").getTextContent());
+                centro.setCodiComarca(getNodeByTagName(nodosHijos, "codi_comarca").getTextContent());
+                centro.setCodiMunicipi5Digits(getNodeByTagName(nodosHijos, "codi_municipi_5_digits").getTextContent());
+                centro.setCodiMunicipi6Digits(getNodeByTagName(nodosHijos, "codi_municipi_6_digits").getTextContent());
+                centro.setNomMunicipi(getNodeByTagName(nodosHijos, "nom_municipi").getTextContent());
+                centro.setCodiDistricteMunicipal(getNodeByTagName(nodosHijos, "codi_districte_municipal").getTextContent());
+                centro.setCoordenadesUtmX(Double.parseDouble(getNodeByTagName(nodosHijos, "coordenades_utm_x").getTextContent()));
+                centro.setCoordenadesUtmY(Double.parseDouble(getNodeByTagName(nodosHijos, "coordenades_utm_y").getTextContent()));
+                try {//hay algunos centros que no tienen coords
+                    centro.setCoordenadesGeoX(Double.parseDouble(getNodeByTagName(nodosHijos, "coordenades_geo_x").getTextContent()));
+                    centro.setCoordenadesGeoY(Double.parseDouble(getNodeByTagName(nodosHijos, "coordenades_geo_y").getTextContent()));
+                } catch (Exception e) {
                     centro.setCoordenadesGeoX(0.0);
                     centro.setCoordenadesGeoY(0.0);
                 }
-                centro.setEstudis(getNodeByTagName(nodosHijos,"estudis").getTextContent());
-                centro.setGeoreferencia(getNodeByTagName(nodosHijos,"georefer_ncia").getTextContent());
+                centro.setEstudis(getNodeByTagName(nodosHijos, "estudis").getTextContent());
+                centro.setGeoreferencia(getNodeByTagName(nodosHijos, "georefer_ncia").getTextContent());
                 jsonsTransformados.add(mapper.writeValueAsString(centro));
             }
             return jsonsTransformados;
-        }catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("EXCEPCION EN CAT: " + e);
             return new ArrayList<>();
+        } finally {
+            if (inputFileStream != null)
+                try{
+                inputFileStream.close();}catch(Exception e){}
         }
     }
 
