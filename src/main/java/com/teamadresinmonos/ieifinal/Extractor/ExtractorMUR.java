@@ -45,7 +45,8 @@ public class ExtractorMUR {
                 double longitud;
                 double latitud;
 
-                if (jsonObject.get("geo-referencia") == null){
+                //si una de las 2 lat o lon no esta incluida en el archivo, se comporta igual que si no hubiera ninguna coord
+                if (jsonObject.get("geo-referencia") == null || (jsonObject.get("geo-referencia") != null && ((jsonObject.get("geo-referencia").getAsJsonObject()).get("lon") == null || (jsonObject.get("geo-referencia").getAsJsonObject()).get("lat") == null ))){
                     latitud = 0.0;
                     longitud = 0.0;
                 }
