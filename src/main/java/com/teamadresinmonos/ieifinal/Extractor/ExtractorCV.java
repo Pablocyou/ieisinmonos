@@ -88,7 +88,7 @@ public class ExtractorCV {
                         codigolocalidad = jsonObject.get("codigoPostal").getAsString().substring(2, 5);
                     else
                         codigolocalidad = ("0" + jsonObject.get("codigoPostal").getAsString()).substring(2, 5);
-                        feedback += "\n Modificado el codigo localidad del centro " + nombre + ".";
+                        //feedback += "\n Modificado el codigo localidad del centro " + nombre + ".";
                 }catch(StringIndexOutOfBoundsException e){codigolocalidad = "_";}
 
                 String nombreprovincia = jsonObject.get("provincia").getAsString();
@@ -151,7 +151,8 @@ ON DUPLICATE KEY UPDATE
             catch(Exception e){System.out.println("EXCEPTION EXTRACTOR CV: " + e);}
         }
         feedback += "\n Insertados: " + insertados;
-        driver.quit();
+        if(online)
+            driver.quit();
 
         return feedback;
     }
