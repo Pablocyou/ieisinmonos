@@ -1,5 +1,6 @@
 package com.teamadresinmonos.ieifinal;
 
+import com.teamadresinmonos.ieifinal.Extractor.ExtractorCAT;
 import com.teamadresinmonos.ieifinal.Util.Config;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,6 +20,7 @@ public class IeIfinalApplication {
         System.out.println("http://localhost:8080/dunkMUR?filename=MUR.json");
         System.out.println("Para ver la documentacion accede a la siguiente URL");
         System.out.println("http://localhost:8080/swagger-ui/index.html");
+        ExtractorCAT.dunk("CAT.xml");
     }
 
 }

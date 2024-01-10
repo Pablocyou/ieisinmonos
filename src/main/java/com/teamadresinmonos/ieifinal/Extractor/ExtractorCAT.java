@@ -42,7 +42,7 @@ public class ExtractorCAT {
 
                     //Insertamos la provincia solo si no esta, si ya esta pasamos
                     PreparedStatement statement = connection.prepareStatement("""
-                    INSERT IGNORE INTO provincia SET codigo = ?, nombre = ?
+                    INSERT IGNORE INTO provincia SET codigo = ?, nombre = ? 
 """);
                     statement.setString(1,codigoprovincia);
                     statement.setString(2,nombreprovincia);
@@ -50,7 +50,7 @@ public class ExtractorCAT {
 
                     //Insertamos la localidad solo si no esta, si ya esta pasamos
                     PreparedStatement statement2 = connection.prepareStatement("""
-                    INSERT IGNORE INTO localidad SET codigo = ?, nombre = ?, provincia = ? 
+                    INSERT IGNORE INTO localidad SET codigo = ?, nombre = ?, provincia = ?
 """);
                     statement2.setString(1,codigolocalidad);
                     statement2.setString(2,nombrelocalidad);
@@ -59,10 +59,18 @@ public class ExtractorCAT {
 
                     //Insertamos el centro
                     PreparedStatement statement3 = connection.prepareStatement("""
-                    INSERT IGNORE INTO centro SET nombre = ?,
-                     tipo = ?, direccion = ?, codigo_postal = ?, longitud = ?, latitud = ?,
-                     telefono = null, descripcion = ?, localidad = ?, comunidad = ?
-""");
+                    INSERT INTO centro (nombre, tipo, direccion, codigo_postal, longitud, latitud, telefono, descripcion, localidad, comunidad)
+VALUES (?, ?, ?, ?, ?, ?, NULL, ?, ?, ?)
+ON DUPLICATE KEY UPDATE
+    tipo = VALUES(tipo),
+    direccion = VALUES(direccion),
+    codigo_postal = VALUES(codigo_postal),
+    longitud = VALUES(longitud),
+    latitud = VALUES(latitud),
+    telefono = VALUES(telefono),
+    descripcion = VALUES(descripcion),
+    localidad = VALUES(localidad),
+    comunidad = VALUES(comunidad);""");
                     statement3.setString(1,nombre);
                     statement3.setString(2,naturalesa);
                     statement3.setString(3,adressa);
