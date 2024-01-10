@@ -85,7 +85,7 @@ public class ExtractorMUR {
                 //Insertamos el centro
                 PreparedStatement statement3 = connection.prepareStatement("""
                                     INSERT INTO centro (nombre, tipo, direccion, codigo_postal, longitud, latitud, telefono, descripcion, localidad, comunidad)
-VALUES (?, ?, ?, ?, ?, ?, NULL, ?, ?, ?)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ON DUPLICATE KEY UPDATE
     tipo = VALUES(tipo),
     direccion = VALUES(direccion),
