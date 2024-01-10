@@ -10,11 +10,12 @@ import java.sql.PreparedStatement;
 import java.util.List;
 
 public class ExtractorMUR {
-    public static int dunk(String filename) throws Exception{
+    public static String dunk(String filename) throws Exception{
         System.out.println("Empezando dunk de MUR");
         Connection connection = mariadbConnect.mdbconn();
         List<String> lista = WrapperMUR.kebab(filename);
         int insertados = 0;
+        String feedback = "";
 
         while(lista.size()>0) {
             try {
@@ -40,7 +41,7 @@ public class ExtractorMUR {
                 String codiPostal="";
                 try {
                     codiPostal = "" + (jsonObject.get("cpcen").getAsInt());
-                }catch(Exception e){codiPostal="";}
+                }catch(Exception e){codiPostal=""; feedback += " Modificado el codigo postal del centro " + nombre + ".";}
 
                 double longitud;
                 double latitud;
@@ -49,6 +50,7 @@ public class ExtractorMUR {
                 if (jsonObject.get("geo-referencia") == null || (jsonObject.get("geo-referencia") != null && ((jsonObject.get("geo-referencia").getAsJsonObject()).get("lon") == null || (jsonObject.get("geo-referencia").getAsJsonObject()).get("lat") == null ))){
                     latitud = 0.0;
                     longitud = 0.0;
+                    feedback += "\n Modificadas las coords del centro " + nombre + ".";
                 }
                 else {
                     longitud = (jsonObject.get("geo-referencia").getAsJsonObject()).get("lon").getAsDouble();
@@ -111,7 +113,7 @@ ON DUPLICATE KEY UPDATE
             }
             catch(Exception e){System.out.println("EXCEPTION EXTRACTOR MUR: " + e);}
         }
-
-        return insertados;
+        feedback += "\n Insertados: " + insertados;
+        return feedback;
     }
 }

@@ -32,15 +32,15 @@ public class mainController {
             System.out.println("CV: " + filename.get("filenameCV"));
             System.out.println("CAT: " + filename.get("filenameCAT"));
             System.out.println("MUR: " + filename.get("filenameMUR"));
-            int a = 0;
-            int b = 0;
-            int c = 0;
+            String a = "";
+            String b = "";
+            String c = "";
             File f = new File(Config.getDataLocation() + filename.get("filenameCV"));
             if(f.exists() && !f.isDirectory()) {
                 a = dataManagerService.dunkCV(filename.get("filenameCV"));
             }
 
-            if(a <0){msgCV = "Fallo de conexión con www.coordenadas-gps.com"; a = -a;}
+            //if(a <0){msgCV = "Fallo de conexión con www.coordenadas-gps.com"; a = -a;}
 
 
             f = new File(Config.getDataLocation() + filename.get("filenameCAT"));
@@ -53,7 +53,8 @@ public class mainController {
                 c = dataManagerService.dunkMUR(filename.get("filenameMUR"));
             }
 
-            return "Filas insertadas: " + (c + a + b) + " " + msgCV;
+            return "" + a + b + c;
+            //return "Filas insertadas: " + (c + a + b) + " " + msgCV;
         }catch(Exception e){
             e.printStackTrace();
             return "oof";}

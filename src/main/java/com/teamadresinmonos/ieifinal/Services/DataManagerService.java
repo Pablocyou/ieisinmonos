@@ -11,11 +11,11 @@ public class DataManagerService {
      * Clase para el desacople de los métodos de la API con la lógica: Insertar datos en DB
      * */
 
-    public static int dunkCAT(String filename){
+    public static String dunkCAT(String filename){
         return ExtractorCAT.dunk(filename);
     }
 
-    public static int dunkMUR(String filename){
+    public static String dunkMUR(String filename){
         try {
             return ExtractorMUR.dunk(filename);
         } catch (Exception e) {
@@ -23,7 +23,7 @@ public class DataManagerService {
         }
     }
 
-    public static int dunkCV(String filename){
+    public static String dunkCV(String filename){
         try {
             return ExtractorCV.dunk(filename);
         } catch (InterruptedException e) {

@@ -11,11 +11,12 @@ import java.util.List;
 
 public class ExtractorCAT {
 
-    public static int dunk(String filename){
+    public static String dunk(String filename){
         System.out.println("Empezando dunk de CAT");
         Connection connection = mariadbConnect.mdbconn();
         List<String> lista = WrapperCAT.kebab(filename);
         int insertados = 0;
+        String feedback = "";
 
         while(lista.size()>0) {
             try {
@@ -81,6 +82,7 @@ ON DUPLICATE KEY UPDATE
                     }else{
                         statement3.setNull(5,0);
                         statement3.setNull(6,0);
+                        feedback += "\n Modificadas las coords del centro " + nombre + ".";
                     }
                     statement3.setString(7,descripcion);
                     statement3.setString(8,codigolocalidad);
@@ -91,6 +93,8 @@ ON DUPLICATE KEY UPDATE
             }
             catch(Exception e){System.out.println("EXCEPTION EXTRACTOR CAT: " + e);}
         }
-        return insertados;
+
+        feedback += "\n Insertados: " + insertados;
+        return feedback;
     }
 }

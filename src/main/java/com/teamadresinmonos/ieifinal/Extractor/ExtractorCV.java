@@ -24,11 +24,12 @@ public class ExtractorCV {
     static Double longitud=0.0;
     static Double latitud=0.0;
     static WebDriver driver;
-    public static int dunk(String filename) throws InterruptedException {
+    public static String dunk(String filename) throws InterruptedException {
         System.out.println("Empezando dunk de CV");
         Connection connection = mariadbConnect.mdbconn();
         List<String> lista = WrapperCV.kebab(filename);
         int insertados = 0;
+        String feedback = "";
 
         boolean online = false;
         try{
@@ -42,7 +43,7 @@ public class ExtractorCV {
             Thread.sleep(2000);
             JavascriptExecutor js = (JavascriptExecutor) driver;
             js.executeScript("javascript:window.scrollBy(750,950)");
-        }
+        } else { feedback += "La web no funciona";}
 
         while(lista.size()>0) {
             try {
@@ -87,6 +88,7 @@ public class ExtractorCV {
                         codigolocalidad = jsonObject.get("codigoPostal").getAsString().substring(2, 5);
                     else
                         codigolocalidad = ("0" + jsonObject.get("codigoPostal").getAsString()).substring(2, 5);
+                        feedback += "\n Modificado el codigo localidad del centro " + nombre + ".";
                 }catch(StringIndexOutOfBoundsException e){codigolocalidad = "_";}
 
                 String nombreprovincia = jsonObject.get("provincia").getAsString();
@@ -97,6 +99,7 @@ public class ExtractorCV {
                     codigoprovincia = jsonObject.get("codigoPostal").getAsString().substring(0,2);
                 else
                     codigoprovincia = ("0" + jsonObject.get("codigoPostal").getAsString()).substring(0,2);
+                    feedback += "\n Modificado el codigo postal del centro " + nombre + ".";
                 }catch(StringIndexOutOfBoundsException e){codigoprovincia = "_";}
 
                 //Insertamos la provincia solo si no esta, si ya esta pasamos
@@ -147,9 +150,10 @@ ON DUPLICATE KEY UPDATE
             }
             catch(Exception e){System.out.println("EXCEPTION EXTRACTOR CV: " + e);}
         }
-        if(!online){return -1*insertados;}
+        feedback += "\n Insertados: " + insertados;
         driver.quit();
-        return insertados;
+
+        return feedback;
     }
 
     private static WebDriver resetBrowser() throws InterruptedException {
