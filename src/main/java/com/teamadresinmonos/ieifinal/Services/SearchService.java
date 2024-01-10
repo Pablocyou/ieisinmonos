@@ -147,7 +147,7 @@ public class SearchService {
     private static List<CentroBD> getCentroBDS(String input, List<CentroBD> sol, PreparedStatement statement) throws Exception {
         CentroBD item;
         List<CentroBD> sol2 = new ArrayList<>();
-        if(input.equals("comunidad"))
+        if(!input.equals("comunidad"))
             statement.setString(1, input);
         ResultSet resultSet = statement.executeQuery();
 
